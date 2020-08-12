@@ -24,8 +24,9 @@ class ContactList extends React.Component {
     });
   };
 
-  deleteContact(id) {
-    const list = this.state.contacts.filter((contact) => contact.id !== id);
+  deleteContact(index) {
+    const list = [...this.state.contacts];
+    list.splice(index, 1);
 
     this.setState({
       contacts: list,
@@ -56,7 +57,7 @@ class ContactList extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="ContactList">
         <button onClick={this.addContact}>Add Random Contact</button>
         <button onClick={this.sortByName}>Sort by name</button>
         <button onClick={this.sortByPopularity}>Sort by popularity</button>
@@ -69,7 +70,7 @@ class ContactList extends React.Component {
               <th>Action</th>
             </tr>
           </thead>
-          {this.state.contacts.map((contact) => {
+          {this.state.contacts.map((contact, index) => {
             return (
               <tbody key={contact.id}>
                 <tr>
@@ -79,7 +80,10 @@ class ContactList extends React.Component {
                   <td>{contact.name}</td>
                   <td>{Math.round(contact.popularity * 100) / 100}</td>
                   <td>
-                    <button onClick={() => this.deleteContact(contact.id)}>
+                    <button
+                      className="delete"
+                      onClick={() => this.deleteContact(index)}
+                    >
                       Delete
                     </button>
                   </td>
