@@ -3,11 +3,6 @@ import contacts from './../contacts.json';
 
 let onlyFiveContacts = contacts.splice(0, 5);
 
-function chooseRandom() {
-  let index = Math.floor(Math.random() * (contacts.length - 1));
-  return contacts[index];
-}
-
 class ContactList extends React.Component {
   constructor() {
     super();
@@ -17,11 +12,20 @@ class ContactList extends React.Component {
   }
 
   addContact = () => {
-    const item = chooseRandom();
-    const list = [...this.state.contacts, item];
-    this.setState({
-      contacts: list,
+    const unusedContacts = contacts.filter((item) => {
+      const alreadyThere = this.state.contacts.includes(item);
+      return !alreadyThere;
     });
+
+    if (unusedContacts.length) {
+      const contact =
+        unusedContacts[Math.floor(Math.random() * (contacts.length - 1))];
+
+      const list = [...this.state.contacts, contact];
+      this.setState({
+        contacts: list,
+      });
+    }
   };
 
   deleteContact(index) {
